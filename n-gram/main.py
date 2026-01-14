@@ -1,55 +1,6 @@
-# This is dog
-# This is cat
-# This is big cat
-# This is big dog
-# This is a big cat
-# This is a big dog
+from main import train_model
 
-
-BIGRAM_PROB = {
-    "this": {
-        "is": 1,
-        "dog": 0,
-        "cat": 0,
-        "big": 0,
-        "a": 0,
-    },
-    "is": {
-        "this": 0,
-        "dog": 0.167,
-        "cat": 0.167,
-        "big": 0.333,
-        "a": 0.333,
-    },
-    "dog": {
-        "this": 0,
-        "is": 0,
-        "big": 0,
-        "a": 0,
-        "cat": 0,
-    },
-    "cat": {
-        "this": 0,
-        "is": 0,
-        "big": 0,
-        "a": 0,
-        "dog": 0,
-    },
-    "big": {
-        "this": 0,
-        "is": 0,
-        "dog": 0.333,
-        "cat": 0.333,
-        "a": 0,
-    },
-    "a": {
-        "this": 0,
-        "is": 0,
-        "dog": 0,
-        "cat": 0,
-        "big": 0.333,
-    },
-}
+BIGRAM_PROB = train_model("datasets/example.txt")
 
 TEST_CASES = [
     ["this _ a dog"],
@@ -61,6 +12,7 @@ TEST_CASES = [
 def bigram_prob(prev_word, next_word):
     return BIGRAM_PROB.get(prev_word, {}).get(next_word, 0)
 
+
 def score(word, prev_word, next_word):
     if bigram_prob(prev_word, word) == 0:
         return bigram_prob(word, next_word)
@@ -69,6 +21,7 @@ def score(word, prev_word, next_word):
         return bigram_prob(prev_word, word)
 
     return bigram_prob(prev_word, word) * bigram_prob(word, next_word)
+
 
 def predict_blank(sentence):
     words = sentence.split()
@@ -87,6 +40,7 @@ def predict_blank(sentence):
             best_word = candidate
 
     return best_word
+
 
 def test():
     for case in TEST_CASES:
