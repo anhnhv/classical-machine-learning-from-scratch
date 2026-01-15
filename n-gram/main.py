@@ -1,4 +1,4 @@
-from main import train_model
+from train import train_model
 
 BIGRAM_PROB = train_model("datasets/example.txt")
 
@@ -14,14 +14,21 @@ def bigram_prob(prev_word, next_word):
 
 
 def score(word, prev_word, next_word):
-    if bigram_prob(prev_word, word) == 0:
-        return bigram_prob(word, next_word)
+    left_side_score = bigram_prob(prev_word, word)
+    right_side_score = bigram_prob(word, next_word)
 
-    if bigram_prob(word, next_word) == 0:
-        return bigram_prob(prev_word, word)
+    # print(f"Left score '({prev_word}|{word})={left_side_score}")
+    # print(f"Right score '({word}|{next_word})={right_side_score}'")
 
-    return bigram_prob(prev_word, word) * bigram_prob(word, next_word)
+    # if left_side_score == 0:
+    #     return right_side_score
 
+    # if right_side_score == 0:
+    #     return left_side_score
+    
+    final_score = left_side_score + right_side_score
+
+    return final_score
 
 def predict_blank(sentence):
     words = sentence.split()
@@ -39,13 +46,21 @@ def predict_blank(sentence):
             best_score = current_score
             best_word = candidate
 
-    return best_word
+    return {
+        "best_match": best_word,
+        "score": best_score
+    }
 
+def print_output(sentence, prediction):
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+    result = sentence.replace("_", f"{UNDERLINE}{prediction['best_match']}{RESET}")
+    print(f"{result}, Score: {prediction['score']}")
 
 def test():
     for case in TEST_CASES:
         sentence = case[0]
         prediction = predict_blank(sentence)
-        print(f"Sentence: '{sentence}' => Predicted word: '{prediction}'")
+        print_output(sentence, prediction)
 
 test()
