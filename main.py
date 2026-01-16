@@ -22,10 +22,3 @@ def write_datasets(file_path, datasets):
     with open(file_name, 'w') as file:
         for line in datasets:
             file.write(line + '\n')
-
-input_file_path = "raw-data/train.tsv"
-output_file_path = "datasets/train-{lines}.txt"
-
-raw_data = load_raw_data(input_file_path)
-datasets = raw_data_to_datasets(raw_data)
-write_datasets(output_file_path, datasets)
