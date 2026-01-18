@@ -1,4 +1,6 @@
 import re
+import json
+import os
 
 def load_raw_data(file_path):
     with open(file_path, 'r') as file:
@@ -22,3 +24,12 @@ def write_datasets(file_path, datasets):
     with open(file_name, 'w') as file:
         for line in datasets:
             file.write(line + '\n')
+
+def save_trained_model(model, model_path):
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    with open(model_path, 'w') as file:
+        json.dump(model, file)
+
+def load_trained_model(model_path):
+    with open(model_path, 'r') as file:
+        return json.load(file)

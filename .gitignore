@@ -2,3 +2,4 @@ datasets/*
 !datasets/example.txt
 __pycache__
 raw-data
+models/*

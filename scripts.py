@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from main import load_raw_data, raw_data_to_datasets, write_datasets
+from utils import load_raw_data, raw_data_to_datasets, write_datasets
 
 def raw2dataset(args):
     raw_data = load_raw_data(args.input)
